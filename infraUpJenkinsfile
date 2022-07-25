@@ -1,0 +1,48 @@
+#!groovy
+
+
+node {
+
+
+    stage(name: 'Checkout from SCM') {
+        echo 'Checking out from scm'
+        checkout scm
+    }
+
+    stage(name: 'Up docker-compose') {
+        echo 'Executing comand docker-compose'
+        sh "docker-compose -f infra-up-docker-compose.yml up"
+    }
+
+
+
+}
+
+
+
+def sendMsgToSlack(text) {
+
+/*
+    try {
+        build(job: "send-slack-message",
+                parameters: [
+                        string(name: "TITLE", value: "[${PROJECT_NAME}][${branch}]"),
+                        string(name: "TITLELINK", value: env.BUILD_URL),
+                        string(name: "TEXT", value: text),
+                        string(name: "CHANNEL", value: "#podolsk-alerts")
+                ]
+        )
+    } catch (all) {
+        echo "Não foi possível enviar a mensagem para o canal #podolsk-alerts"
+        echo "Error: ${all.message}"
+    }
+    */
+}
+
+def getVersion() {
+    def lines = readFile("${env.WORKSPACE}/gradle.properties").split("\n")
+
+    return lines.find { it.contains("version") }
+            .split("=")[1]
+            .trim()
+}
