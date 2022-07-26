@@ -33,7 +33,7 @@ wait_for()
     while :
     do
         if [[ $WAITFORIT_ISBUSY -eq 1 ]]; then
-            nc -z $WAITFORIT_HOST $WAITFORIT_PORT
+            nc -z $WAITFORIT_HOST
             WAITFORIT_result=$?
         else
             (echo -n > /dev/tcp/$WAITFORIT_HOST/$WAITFORIT_PORT) >/dev/null 2>&1
