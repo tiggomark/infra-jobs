@@ -48,6 +48,12 @@ node {
         sh "docker run --rm --network cluster-network -p 8081:8081 --name api-gateway-app -d  ${repositoryUrl}/api-gateway-app:latest"
     }
 
+    stage(name: 'Up customer-app') {
+        sh "docker run --network cluster-network  -d  ${repositoryUrl}/customer-app:latest"
+    }
+
+
+
 
 
 }
