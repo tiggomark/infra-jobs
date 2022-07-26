@@ -15,6 +15,15 @@ node {
         sh 'chmod +x wait-for-it.sh'
     }
 
+    stage(name: 'database-app') {
+        sh "docker run --name database-app  \
+                -p 3306:3306 \
+                -e MYSQL_ROOT_PASSWORD=leghacy150991 -e MYSQL_DATABASE=customer_app \
+                --network cluster-network \
+                -d mysql:5.7.38"
+
+    }
+
     stage(name: 'Up config-app') {
         echo 'Deploying config-app'
         sh "docker rm --force config-app"
