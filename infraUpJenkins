@@ -1,5 +1,5 @@
 #!groovy
-
+def repositoryUrl = 'tiggomark'
 
 node {
 
@@ -9,9 +9,19 @@ node {
         checkout scm
     }
 
-    stage(name: 'Up docker-compose') {
-        echo 'Executing comand docker-compose'
-        sh "docker-compose -f infra-up-docker-compose.yml up"
+    stage(name: 'Up config-app') {
+        echo 'Deploying config-app'
+        sh "docker rm --force config-app"
+        sh "docker run --rm --network cluster-network -p 8888:8888 --name config-app -d  ${repositoryUrl}/config-app:latest"
+    }
+
+    stage(name: 'Up eureka-server-app') {
+        echo 'Deploying eureka-server-app'
+        echo 'Waiting config-app..'
+        sh "./wait-for-it.sh http://config-app:8888"
+        echo 'config-app is Up!'
+        sh "docker rm --force eureka-server-app"
+        sh "docker run --rm --network cluster-network -p 8761:8761 --name eureka-server-app -d  ${repositoryUrl}/eureka-server-app:latest"
     }
 
 
