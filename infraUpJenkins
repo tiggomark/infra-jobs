@@ -18,7 +18,7 @@ node {
     stage(name: 'Up eureka-server-app') {
         echo 'Deploying eureka-server-app'
         echo 'Waiting config-app..'
-        sh 'http://config-app:8888/config/default'
+        sh 'curl http://config-app:8888/config/default'
         sh 'chmod +x wait-for-it.sh'
         sh "./wait-for-it.sh http://config-app:8888/config/default"
         echo 'config-app is Up!'
