@@ -19,7 +19,7 @@ node {
         echo 'Deploying eureka-server-app'
         echo 'Waiting config-app..'
         sh 'chmod +x wait-for-it.sh'
-        sh "sudo ./wait-for-it.sh http://config-app:8888"
+        sh "./wait-for-it.sh http://config-app:8888"
         echo 'config-app is Up!'
         sh "docker rm --force eureka-server-app"
         sh "docker run --rm --network cluster-network -p 8761:8761 --name eureka-server-app -d  ${repositoryUrl}/eureka-server-app:latest"
