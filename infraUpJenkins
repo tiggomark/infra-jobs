@@ -18,6 +18,7 @@ node {
     stage(name: 'Up eureka-server-app') {
         echo 'Deploying eureka-server-app'
         echo 'Waiting config-app..'
+        sh 'chmod +x wait-for-it.sh'
         sh "sudo ./wait-for-it.sh http://config-app:8888"
         echo 'config-app is Up!'
         sh "docker rm --force eureka-server-app"
