@@ -29,9 +29,9 @@ fi
 # Begin script in case all parameters are correct
 
 
-while [[ ${STATUS_RECEIVED} != ${status} ]];
-        do STATUS_RECEIVED=$(curl -s -o /dev/null -L -w ''%{http_code}'' ${host}) &&
-        echo "received status: $STATUS_RECEIVED" &&
+while [[ ${STATUS_RECEIVED} != ${status} ]]; do
+        STATUS_RECEIVED=$(curl -s -o /dev/null -L -w ''%{http_code}'' ${host});
+        echo "received status: $STATUS_RECEIVED";
         sleep 1;
     done;
     echo success with status: $STATUS_RECEIVED'
