@@ -1,6 +1,7 @@
 #!groovy
 def repositoryUrl = 'tiggomark'
 def waitConfigAppScript = './wait-for-it.sh -s 200 -h http://config-app:8888/config/default'
+def waitEurekaServerAppScript = './wait-for-it.sh -s 200 -h http://eureka-server-app:8761:8761/config/default'
 
 node {
 
@@ -27,6 +28,15 @@ node {
         echo 'config-app is Up!'
         sh "docker rm --force eureka-server-app"
         sh "docker run --rm --network cluster-network -p 8761:8761 --name eureka-server-app -d  ${repositoryUrl}/eureka-server-app:latest"
+    }
+
+    stage(name: 'Up Api Gateway') {
+        echo 'Deploying api-gateway-app'
+        echo 'Waiting eureka-server-app...'
+        sh "${waitEurekaServerAppScript}"
+        echo 'api-gateway-app is Up!'
+        sh "docker rm --force api-gateway-app"
+        sh "docker run --rm --network cluster-network -p 8081:8081 --name api-gateway-app -d  ${repositoryUrl}/api-gateway-app:latest"
     }
 
 
