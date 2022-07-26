@@ -11,14 +11,14 @@ node {
 
     stage(name: 'Up config-app') {
         echo 'Deploying config-app'
-        sh "docker rm --force config-app"
-        sh "docker run --rm --network cluster-network -p 8888:8888 --name config-app -d  ${repositoryUrl}/config-app:latest"
+        //sh "docker rm --force config-app"
+        //sh "docker run --rm --network cluster-network -p 8888:8888 --name config-app -d  ${repositoryUrl}/config-app:latest"
     }
 
     stage(name: 'Up eureka-server-app') {
         echo 'Deploying eureka-server-app'
         echo 'Waiting config-app..'
-        sh 'curl http://config-app:8888/config/default'
+        sh 'curl http://localhost:8888/config/default'
         sh 'chmod +x wait-for-it.sh'
         sh "./wait-for-it.sh http://config-app:8888/config/default"
         echo 'config-app is Up!'
