@@ -5,14 +5,6 @@ networks:
 
 services:
 
-    config-app:
-      container_name: config-app
-      image: tiggomark/config-app:latest
-      ports:
-        - "8888:8888"
-      networks:
-        - cluster-network
-
     eureka-server-app:
       container_name: eureka-server-app
       image: tiggomark/eureka-server-app:latest
@@ -20,12 +12,8 @@ services:
         - "8761:8761"
       depends_on:
         - config-app
-      healthcheck:
-        test: curl --fail http://config-app:8888 || exit 1
-        interval: 10s
-        retries: 5
-        start_period: 5s
-        timeout: 10s
+      command: 'dockerize -wait=tcp://config-app:8888/default'
+
       networks:
         - cluster-network
 
@@ -63,6 +51,15 @@ services:
         - db:/var/lib/mysql5
       networks:
         - cluster-network
+
+    config-app:
+      container_name: config-app
+      image: tiggomark/config-app:latest
+      ports:
+        - "8888:8888"
+      networks:
+        - cluster-network
+
 
 volumes:
   db:
