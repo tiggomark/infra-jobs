@@ -26,7 +26,7 @@ node {
 
     stage(name: 'Up config-app') {
         echo 'Deploying config-app'
-        //sh "docker rm --force config-app"
+        sh "docker rm --force config-app"
         sh "docker run --rm --network cluster-network -p 8888:8888 --name config-app -d  ${repositoryUrl}/config-app:latest"
     }
 
@@ -35,7 +35,7 @@ node {
         echo 'Waiting config-app..'
         sh "${waitConfigAppScript}"
         echo 'config-app is Up!'
-        //sh "docker rm --force eureka-server-app"
+        sh "docker rm --force eureka-server-app"
         sh "docker run --network cluster-network -p 8761:8761 --name eureka-server-app -d  ${repositoryUrl}/eureka-server-app:latest"
     }
 
@@ -43,8 +43,8 @@ node {
         echo 'Deploying api-gateway-app'
         echo 'Waiting eureka-server-app...'
         sh "${waitEurekaServerAppScript}"
-        echo 'api-gateway-app is Up!'
-        //sh "docker rm --force api-gateway-app"
+        echo 'eureka is Up!'
+        sh "docker rm --force api-gateway-app"
         sh "docker run --rm --network cluster-network -p 8081:8081 --name api-gateway-app -d  ${repositoryUrl}/api-gateway-app:latest"
     }
 
