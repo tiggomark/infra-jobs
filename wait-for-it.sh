@@ -10,7 +10,7 @@ helpFunction()
    exit 1 # Exit script after printing help
 }
 
-while getopts "h:" opt
+while getopts "h:s:" opt
 do
    case "$opt" in
       h ) host="$OPTARG" ;;
