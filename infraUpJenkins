@@ -2,6 +2,7 @@
 def repositoryUrl = 'tiggomark'
 def waitConfigAppScript = './wait-for-it.sh -s 200 -h http://config-app:8888/eureka-server-app/default'
 def waitEurekaServerAppScript = './wait-for-it.sh -s 200 -h http://eureka-server-app:8761'
+def mysqlRootPassword='';
 
 node {
 
@@ -15,19 +16,29 @@ node {
         sh 'chmod +x wait-for-it.sh'
     }
 
+    stage(name: 'Configure credentials'){
+        withCredentials([usernamePassword(credentialsId: 'database', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+
+            mysqlRootPassword = $PASSWORD;
+            echo "MYSQL PASSWORD = ${mysqlRootPassword}"
+        }
+    }
+
     stage(name: 'database-app') {
+
         sh "docker run --name database-app  \
-                -p 3306:3306 \
-                -e MYSQL_ROOT_PASSWORD=leghacy150991 -e MYSQL_DATABASE=customer_app \
-                --network cluster-network \
-                -d mysql:5.7.38"
+            -p 3306:3306 \
+            -e MYSQL_ROOT_PASSWORD=${mysqlRootPassword} -e MYSQL_DATABASE=customer_app \
+            --network cluster-network \
+            -d mysql:5.7.38"
+
 
     }
 
     stage(name: 'Up config-app') {
         echo 'Deploying config-app'
         sh "docker rm --force config-app"
-        sh "docker run --rm --network cluster-network -p 8888:8888 --name config-app -d  ${repositoryUrl}/config-app:latest"
+        sh "docker run --rm --network cluster-network -p 8888:8888 -e MYSQL_ROOT_PASSWORD=${mysqlRootPassword}  --name config-app -d  ${repositoryUrl}/config-app:latest"
     }
 
     stage(name: 'Up eureka-server-app') {
@@ -50,7 +61,7 @@ node {
     }
 
     stage(name: 'Up customer-app') {
-        sh "docker run --network cluster-network  -d  ${repositoryUrl}/customer-app:latest"
+        sh "docker run --network cluster-network -e   -d  ${repositoryUrl}/customer-app:latest"
     }
 
 
