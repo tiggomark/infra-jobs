@@ -19,7 +19,7 @@ node {
     stage(name: 'Configure credentials'){
         withCredentials([usernamePassword(credentialsId: 'database', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
 
-            mysqlRootPassword = $PASSWORD;
+            mysqlRootPassword = PASSWORD;
             echo "MYSQL PASSWORD = ${mysqlRootPassword}"
         }
     }
