@@ -35,6 +35,7 @@ node {
         echo 'Waiting config-app..'
         sh "${waitConfigAppScript}"
         echo 'config-app is Up!'
+        sh 'sleep 5s'
         sh "docker rm --force eureka-server-app"
         sh "docker run --network cluster-network -p 8761:8761 --name eureka-server-app -d  ${repositoryUrl}/eureka-server-app:latest"
     }
