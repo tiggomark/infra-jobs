@@ -14,21 +14,24 @@ while getopts "h:" opt
 do
    case "$opt" in
       h ) host="$OPTARG" ;;
+      s ) status="$OPTARG" ;;
       ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
    esac
 done
 
 # Print helpFunction in case parameters are empty
-if [ -z "$host" ] || [ -z "$host" ]]
+if [ -z "$host" ] || [ -z "$status"]
 then
    echo "Some or all of the parameters are empty";
    helpFunction
 fi
 
 # Begin script in case all parameters are correct
-curl --connect-timeout 5 \
-    --max-time 10 \
-    --retry 5 \
-    --retry-delay 0 \
-    --retry-max-time 40 \
-    $host
+
+
+while [[ ${STATUS_RECEIVED} != ${status} ]];\
+        do STATUS_RECEIVED=$(curl -s -o /dev/null -L -w ''%{http_code}'' ${host}) && \
+        echo "received status: $STATUS_RECEIVED" && \
+        sleep 1;\
+    done;
+    echo success with status: $STATUS_RECEIVED'
