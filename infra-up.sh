@@ -1,10 +1,11 @@
-sudo yum update -y
-sudo yum install curl
+sudo apt update && sudo apt upgrade
+sudo apt install curl
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk install java
-sudo amazon-linux-extras install docker
-sudo service docker start
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo apt-get install git-all
 git clone https://github.com/tiggomark/jenkins.git
 sudo groupadd docker
 sudo usermod -aG docker ${USER}
