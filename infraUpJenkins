@@ -26,11 +26,12 @@ node {
     stage(name: 'database-app') {
 
         sh "docker run --name database-app  \
-            -p 3306:3306 \
-            -e MYSQL_ROOT_PASSWORD=${mysqlRootPassword} -e MYSQL_DATABASE=customer_app \
+             -p 3306:3306 \
             --network cluster-network \
-            -d mysql:5.7.38"
-
+            -e POSTGRES_USER=root \
+            -e POSTGRES_PASSWORD=leghacy150991 \
+            -e POSTGRES_DB=customer_app \
+            -d postgres:alpine3.16"
 
     }
 
