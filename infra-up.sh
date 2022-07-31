@@ -19,4 +19,4 @@ docker container rm jenkins
 sleep 2
 docker network create cluster-network
 sleep 1
-docker run  --group-add 0 --restart=always --network cluster-network -v "//var/run/docker.sock:/var/run/docker.sock" -p 8080:8080 --name jenkins jenkins:0.1.0-SNAPSHOT
+docker run  --restart=always --network cluster-network -v "//var/run/docker.sock:/var/run/docker.sock" -p 8080:8080 --name jenkins jenkins:0.1.0-SNAPSHOT
