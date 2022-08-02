@@ -23,17 +23,7 @@ node {
         }
     }
 
-    stage(name: 'database-app') {
 
-        sh "docker run --name database-app  \
-             -p 5432:5432 \
-            --network cluster-network \
-            -e POSTGRES_USER=root \
-            -e POSTGRES_PASSWORD=leghacy150991 \
-            -e POSTGRES_DB=customer_app \
-            -d postgres:13.1-alpine"
-
-    }
 
     stage(name: 'Up config-app') {
         echo 'Deploying config-app'
