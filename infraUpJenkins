@@ -51,7 +51,7 @@ node {
     }
 
     stage(name: 'Up customer-app') {
-        sh "docker run --network cluster-network  -e JAVA_OPTS=\"-Xms512M -Xmx1024M\" -e SPRING_DATASOURCE_USER=postgres -e SPRING_DATASOURCE_PASSWORD=${mysqlRootPassword} -d  ${repositoryUrl}/customer-app:latest"
+        sh "docker run --network cluster-network  -e JAVA_OPTS=\"-Xms512M -Xmx1024M\" -e SPRING_DATASOURCE_USER=postgres -e SPRING_DATASOURCE_PASSWORD=leghacy150991 -d  ${repositoryUrl}/customer-app:latest"
     }
 
 
