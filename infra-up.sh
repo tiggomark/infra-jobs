@@ -13,6 +13,7 @@ cd jenkins
 chmod +x gradlew
 ./gradlew docker dockerRun
 sleep 5
+docker volume create --name dbVolume
 docker container stop jenkins
 sleep 3
 docker container rm jenkins
