@@ -19,5 +19,8 @@ sleep 3
 docker container rm jenkins
 sleep 2
 docker network create cluster-network
+docker network create -d overlay cluster-network-overlay
+sleep 2
+docker swarm init --advertise-addr 127.0.0.1
 sleep 1
 docker run  --restart=always --network cluster-network -v "//var/run/docker.sock:/var/run/docker.sock" -p 8080:8080 --name jenkins jenkins:0.1.0-SNAPSHOT
